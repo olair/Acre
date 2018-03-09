@@ -4,18 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
-import cn.olair.acre.R;
-
 /**
- * 节点View
+ * 节点View(用于节点样式控制,借助于View的灵活性)
  *
  * Created by olair on 18.1.13.
  */
@@ -45,7 +41,6 @@ public class AcreNodeView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(50, 50);
     }
 
@@ -55,9 +50,11 @@ public class AcreNodeView extends View {
         int width = getWidth();
         int height = getHeight();
         int radius = (width > height ? height : width) / 2;
-        mPaint.setColor(Color.RED);
+        mPaint.setColor(Color.BLACK);
         int canvasWidth = canvas.getWidth();
         int canvasHeight = canvas.getHeight();
         canvas.drawCircle(canvasWidth / 2, canvasHeight / 2, radius, mPaint);
+        mPaint.setColor(Color.RED);
+        canvas.drawCircle(canvasWidth / 2, canvasHeight / 2, radius >> 1, mPaint);
     }
 }

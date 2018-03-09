@@ -1,5 +1,6 @@
 package cn.olair.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,17 +26,9 @@ import java.util.List;
 
 public class AcreLayout extends ViewGroup {
 
-    private static final String TAG = "AcreLayout";
-
-    // 用于绘制的画笔
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    public static final int CIRCLE_RADIUS = 50;
-
 
     // 用于记录点数据的List
     private List<PointF> points = new ArrayList<>();
-
-
 
 
     public AcreLayout(Context context) {
@@ -48,23 +41,22 @@ public class AcreLayout extends ViewGroup {
 
     public AcreLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mPaint.setColor(Color.RED);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public AcreLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        mPaint.setColor(Color.RED);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int count = getChildCount();
-        for(int i=0;i<count;i++) {
-            View child = getChildAt(i);
-            measureChild(child, widthMeasureSpec,heightMeasureSpec);
-        }
+//         其实对于子View的Measure是多此一举
+//        int count = getChildCount();
+//        for(int i=0;i<count;i++) {
+//            View child = getChildAt(i);
+//            measureChild(child, widthMeasureSpec,heightMeasureSpec);
+//        }
     }
 
     @Override
@@ -84,6 +76,7 @@ public class AcreLayout extends ViewGroup {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
