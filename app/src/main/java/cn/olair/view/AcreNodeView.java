@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -50,11 +51,10 @@ public class AcreNodeView extends View {
         int width = getWidth();
         int height = getHeight();
         int radius = (width > height ? height : width) / 2;
-        mPaint.setColor(Color.BLACK);
         int canvasWidth = canvas.getWidth();
         int canvasHeight = canvas.getHeight();
-        canvas.drawCircle(canvasWidth / 2, canvasHeight / 2, radius, mPaint);
         mPaint.setColor(Color.RED);
         canvas.drawCircle(canvasWidth / 2, canvasHeight / 2, radius >> 1, mPaint);
+
     }
 }
