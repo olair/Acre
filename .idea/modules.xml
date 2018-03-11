@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Acre.iml" filepath="$PROJECT_DIR$/Acre.iml" />
-      <module fileurl="file://F:\GitHub\Acre\Acre.iml" filepath="F:\GitHub\Acre\Acre.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://F:\GitHub\Acre\app\app.iml" filepath="F:\GitHub\Acre\app\app.iml" />
     </modules>
   </component>
 </project>
