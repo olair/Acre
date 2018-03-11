@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.os.Build;
@@ -29,6 +30,7 @@ public class AcreLayout extends ViewGroup {
 
     // 用于记录点数据的List
     private List<PointF> points = new ArrayList<>();
+    Matrix matrix = new Matrix();
 
 
     public AcreLayout(Context context) {
@@ -44,30 +46,39 @@ public class AcreLayout extends ViewGroup {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public AcreLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public AcreLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int
+            defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//         其实对于子View的Measure是多此一举
-//        int count = getChildCount();
-//        for(int i=0;i<count;i++) {
-//            View child = getChildAt(i);
-//            measureChild(child, widthMeasureSpec,heightMeasureSpec);
-//        }
+        int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            View child = getChildAt(i);
+            measureChild(child, widthMeasureSpec, heightMeasureSpec);
+        }
     }
+
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        canvas.setMatrix(matrix);
+        super.dispatchDraw(canvas);
+    }
+
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int count = getChildCount();
-        for(int i=0;i<count;i++) {
+        for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             int childWidth = child.getMeasuredWidth();
             int childHeight = child.getMeasuredHeight();
             PointF childPoint = points.get(i);
-            setChildFrame(child, (int) childPoint.x - childWidth / 2, (int) childPoint.y - childHeight / 2, childWidth, childHeight);
+            setChildFrame(child, (int) childPoint.x - childWidth / 2, (int) childPoint.y -
+                    childHeight / 2, childWidth, childHeight);
         }
     }
 
