@@ -5,7 +5,6 @@ import android.graphics.RectF;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import cn.olair.view.floor.IStatus;
 import cn.olair.view.floor.two.Bottom;

@@ -4,6 +4,7 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import cn.olair.view.floor.one.Big;
 import cn.olair.view.floor.one.Small;
 
 /**
@@ -20,8 +21,10 @@ public class TransformationMatrix {
     private Matrix mMatrix = new Matrix();
 
     private Small smallStatus = new Small();
+    private Big bigStatus = new Big();
 
-    TransformationMatrix(float left, float top, float right, float bottom, float startX, float startY) {
+    TransformationMatrix(float left, float top, float right, float bottom, float startX, float
+            startY) {
         displayRect.set(left, top, right, bottom);
         contentRect.set(startX, startY, startX, startY);
     }
@@ -52,6 +55,9 @@ public class TransformationMatrix {
         mMatrix.reset();
         if (smallStatus.checkStatus(displayRect, contentRect)) {
             smallStatus.calculate(displayRect, contentRect, mMatrix);
+        }
+        if (bigStatus.checkStatus(displayRect, contentRect)) {
+            bigStatus.calculate(displayRect, new RectF(contentRect), mMatrix);
         }
     }
 
