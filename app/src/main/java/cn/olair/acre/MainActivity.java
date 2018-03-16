@@ -71,7 +71,15 @@ public class MainActivity extends AppCompatActivity {
 //                Log.i("------------ the", "onClick: " + matrix);
 //                Log.i("------------ end", "onClick: " + acreLayout.getMatrix());
 //                acreLayout.rotate(90);
-                acreLayout.scale(1.1f);
+//                acreLayout.scale(1.1f);
+
+                Matrix matrix = new Matrix();
+                matrix.postScale(10, 10);
+                Log.i("--------------- ", "onClick: " + matrix);
+                matrix.preTranslate(20, 20);
+                Log.i("--------------- ", "onClick: " + matrix);
+
+
             }
         });
 

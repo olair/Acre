@@ -28,16 +28,14 @@ public class AcreLayoutT extends ViewGroup {
     private List<PointF> mPoints = new ArrayList<>();
 
     // 用于内容控制
-    private Matrix mMatrix = new Matrix();
+    private TransformationMatrix transformation;
 
     // 开始缩放的边界
-    private int mMaxWidth;
-    private int mMaxHeight;
+    private int mMaxWidth = 0;
+    private int mMaxHeight = 0;
 
     // 定义其实点
     private int mStartX, mStartY;
-
-    private boolean isFirst = true;
 
 
     public AcreLayoutT(Context context) {
@@ -63,7 +61,7 @@ public class AcreLayoutT extends ViewGroup {
     }
 
     private void initializationField(int maxWidth, int maxHeight) {
-        if (isFirst) {
+        if (mMaxWidth != maxWidth || mMaxHeight != maxHeight) {
             mMaxWidth = maxWidth;
             mMaxHeight = maxHeight;
 
@@ -71,7 +69,7 @@ public class AcreLayoutT extends ViewGroup {
             mStartY = mMaxHeight / 2;
 
             mPoints.add(new PointF(mStartX, mStartY));
-            isFirst = false;
+            transformation = new TransformationMatrix(mMaxWidth, mMaxHeight);
         }
     }
 
@@ -89,7 +87,7 @@ public class AcreLayoutT extends ViewGroup {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        canvas.setMatrix(mMatrix);
+        canvas.setMatrix(transformation.getMatrix());
         super.dispatchDraw(canvas);
     }
 
@@ -112,22 +110,14 @@ public class AcreLayoutT extends ViewGroup {
 
     public void moveTo(float x, float y) {
 
-        mMatrix.reset();
+        transformation.reset();
 
         PointF targetPoint = new PointF(x, y);
         mPoints.add(targetPoint);
         addView(new AcreNodeView(getContext()));
 
         // 开始相关变换
-        if (x > mMaxWidth || y > mMaxHeight) {
-            float scaleX = mMaxWidth / x;
-            float scaleY = mMaxHeight / y;
-            if (scaleX > scaleY) {
-                mMatrix.postScale(scaleY, scaleY);
-            } else {
-                mMatrix.postScale(scaleX, scaleX);
-            }
-        }
+        transformation.addPoint(targetPoint);
 
         invalidate();
     }
@@ -137,14 +127,5 @@ public class AcreLayoutT extends ViewGroup {
         moveTo(end.x + width, end.y + height);
     }
 
-    public void rotate(float degrees) {
-        mMatrix.postRotate(degrees, (getX() + getWidth()) / 2, (getY() + getHeight()) / 2);
-        invalidate();
-    }
-
-    public void scale(float scale) {
-        mMatrix.postScale(scale, scale, (getX() + getWidth()) / 2, (getY() + getHeight()) / 2);
-        invalidate();
-    }
 
 }
