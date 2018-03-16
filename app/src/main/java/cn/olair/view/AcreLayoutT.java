@@ -2,13 +2,11 @@ package cn.olair.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,15 +26,7 @@ public class AcreLayoutT extends ViewGroup {
     private List<PointF> mPoints = new ArrayList<>();
 
     // 用于内容控制
-    private TransformationMatrix transformation;
-
-    // 开始缩放的边界
-    private int mMaxWidth = 0;
-    private int mMaxHeight = 0;
-
-    // 定义其实点
-    private int mStartX, mStartY;
-
+    private TransformationMatrix transformation = new TransformationMatrix(0, 0, 0, 0, 0, 0);
 
     public AcreLayoutT(Context context) {
         super(context, null, 0);
@@ -48,36 +38,23 @@ public class AcreLayoutT extends ViewGroup {
 
     public AcreLayoutT(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initialization(context, attrs, defStyleAttr, 0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public AcreLayoutT(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int
             defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        initialization(context, attrs, defStyleAttr, defStyleRes);
     }
 
     private void initialization(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int
             defStyleRes) {
     }
 
-    private void initializationField(int maxWidth, int maxHeight) {
-        if (mMaxWidth != maxWidth || mMaxHeight != maxHeight) {
-            mMaxWidth = maxWidth;
-            mMaxHeight = maxHeight;
-
-            mStartX = mMaxWidth / 2;
-            mStartY = mMaxHeight / 2;
-
-            mPoints.add(new PointF(mStartX, mStartY));
-            transformation = new TransformationMatrix(mMaxWidth, mMaxHeight);
-        }
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        initializationField(getMeasuredWidth(), getMeasuredHeight());
-
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
@@ -93,6 +70,13 @@ public class AcreLayoutT extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+
+        // 处理transformation
+        if (!transformation.equalsDisplay(0, 0, getMeasuredWidth(), getMeasuredHeight())) {
+            transformation.resetDisplay(0, 0, getMeasuredWidth(), getMeasuredHeight());
+        }
+
+        // 处理孩子节点
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
@@ -110,8 +94,6 @@ public class AcreLayoutT extends ViewGroup {
 
     public void moveTo(float x, float y) {
 
-        transformation.reset();
-
         PointF targetPoint = new PointF(x, y);
         mPoints.add(targetPoint);
         addView(new AcreNodeView(getContext()));
@@ -125,6 +107,14 @@ public class AcreLayoutT extends ViewGroup {
     public void move(float width, float height) {
         PointF end = mPoints.get(mPoints.size() - 1);
         moveTo(end.x + width, end.y + height);
+    }
+
+    public void start(float x, float y) {
+        PointF point = new PointF(x, y);
+        mPoints.add(point);
+        addView(new AcreNodeView(getContext()));
+        transformation.addPoint(point);
+        transformation.resetContent(x, y, x, y);
     }
 
 

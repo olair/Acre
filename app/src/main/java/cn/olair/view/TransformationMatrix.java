@@ -3,12 +3,7 @@ package cn.olair.view;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cn.olair.view.floor.IStatus;
 import cn.olair.view.floor.one.Small;
 
 /**
@@ -26,28 +21,38 @@ public class TransformationMatrix {
 
     private Small smallStatus = new Small();
 
-    TransformationMatrix(int maxWidth, int maxHeight) {
-        displayRect.set(0, 0, maxWidth, maxHeight);
-        contentRect.set(maxWidth / 2, maxHeight / 2, maxWidth / 2, maxHeight / 2);
+    TransformationMatrix(float left, float top, float right, float bottom, float startX, float startY) {
+        displayRect.set(left, top, right, bottom);
+        contentRect.set(startX, startY, startX, startY);
     }
 
-    void addPoint(PointF point) {
+    public void resetDisplay(float left, float top, float right, float bottom) {
+        displayRect.set(left, top, right, bottom);
+    }
+
+    public void resetContent(float left, float top, float right, float bottom) {
+        contentRect.set(left, top, right, bottom);
+    }
+
+    public void addPoint(PointF point) {
         contentRect.union(point.x, point.y);
-        calculate();
-    }
-
-    public void calculate() {
-        if (smallStatus.checkStatus(displayRect, contentRect)) {
-            smallStatus.calculate(displayRect, contentRect, mMatrix);
-        }
     }
 
     public Matrix getMatrix() {
+        calculate();
         return mMatrix;
     }
 
-    void reset() {
+    public boolean equalsDisplay(float left, float top, float right, float bottom) {
+        return displayRect.left == left && displayRect.top == top &&
+                displayRect.right == right && displayRect.bottom == bottom;
+    }
+
+    private void calculate() {
         mMatrix.reset();
+        if (smallStatus.checkStatus(displayRect, contentRect)) {
+            smallStatus.calculate(displayRect, contentRect, mMatrix);
+        }
     }
 
 }

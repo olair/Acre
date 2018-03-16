@@ -1,23 +1,13 @@
 package cn.olair.acre;
 
 import android.annotation.SuppressLint;
-import android.database.DataSetObserver;
 import android.graphics.Matrix;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import cn.olair.view.AcreLayout;
 import cn.olair.view.AcreLayoutT;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,11 +32,12 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (v instanceof AcreLayoutT) {
                     AcreLayoutT a = (AcreLayoutT) v;
-                    a.moveTo(event.getX(), event.getY());
+                    a.start(event.getX(), event.getY());
                 }
                 return true;
             }
         });
+
 
         left = findViewById(R.id.left);
         top = findViewById(R.id.top);
@@ -72,12 +63,6 @@ public class MainActivity extends AppCompatActivity {
 //                Log.i("------------ end", "onClick: " + acreLayout.getMatrix());
 //                acreLayout.rotate(90);
 //                acreLayout.scale(1.1f);
-
-                Matrix matrix = new Matrix();
-                matrix.postScale(10, 10);
-                Log.i("--------------- ", "onClick: " + matrix);
-                matrix.preTranslate(20, 20);
-                Log.i("--------------- ", "onClick: " + matrix);
 
 
             }
