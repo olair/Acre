@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Acre</string>
+
+
+
+    <!--tools 使用的字符串-->
+    <string name="tools_user_name">Acre hello</string>
+    <string name="tools_user_email">acrehello@gmail.com</string>
+    <string name="local">土地</string>
+
 </resources>
