@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/main_nav_local"
-        android:icon="@drawable/ic_acre_64dp"
-        android:title="@string/local" />
+    <group
+        android:id="@+id/group_system"
+        android:checkableBehavior="single">
 
-    <item
-        android:id="@+id/main_nav_second"
-        android:icon="@drawable/ic_acre_64dp"
-        android:title="@string/local" />
+        <item
+            android:id="@+id/main_nav_local"
+            android:icon="@drawable/ic_land"
+            android:title="@string/local" />
 
+        <item
+            android:id="@+id/main_nav_second"
+            android:icon="@drawable/ic_land"
+            android:title="@string/local" />
+
+    </group>
 </menu>
